@@ -4,56 +4,55 @@ function ToyForm({ onAddToy }) {
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
 
-  function handleSubmit(event) {
-    event.preventDefault();
+  function handleSubmit(e) {
+    e.preventDefault();
 
-    const newToy = {
-      name: name,
-      image: image,
-      likes: 0,
-    };
+    const newToy = { name, image, likes: 0 };
 
     fetch("http://localhost:3001/toys", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newToy),
     })
       .then((res) => res.json())
-      .then((data) => {
-        onAddToy(data);
+      .then((toyFromServer) => {
+        onAddToy(toyFromServer);
         setName("");
         setImage("");
       });
   }
 
   return (
-    <div className="shadow-card">
-      <h2>Add a Toy</h2>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="name">Toy Name:</label>
+    <div className="container">
+      <form className="add-toy-form" onSubmit={handleSubmit}>
+        <h3>Create a toy!</h3>
         <input
-          id="name"
           type="text"
+          name="name"
           placeholder="Enter a toy's name..."
+          className="input-text"
           value={name}
-          onChange={(event) => setName(event.target.value)}
+          onChange={(e) => setName(e.target.value)}
         />
-
-        <label htmlFor="image">Image URL:</label>
+        <br />
         <input
-          id="image"
           type="text"
+          name="image"
           placeholder="Enter a toy's image URL..."
+          className="input-text"
           value={image}
-          onChange={(event) => setImage(event.target.value)}
+          onChange={(e) => setImage(e.target.value)}
         />
-
-        <button type="submit">Create New Toy</button>
+        <br />
+        <input
+          type="submit"
+          name="submit"
+          value="Create New Toy"
+          className="submit"
+        />
       </form>
     </div>
   );
 }
 
-export default ToyForm;
+export default ToyForm
